@@ -1,0 +1,9 @@
+{
+  "name": "InnoSphere: Digital Kheti Companion",
+  "description": "A vernacular, voice-first companion for Indian farmers leveraging Hybrid AI for pest detection, advisory, and market insights.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
