@@ -46,9 +46,11 @@ export const sendChatMessage = async (
     const langName = getLanguageName(language);
     const enforcedMessage = `${message} (Please answer strictly in ${langName})`;
 
-    // Find the first user message to ensure history starts with a user turn
-    const firstUserIndex = history.findIndex(msg => msg.sender === 'user');
-    const cleanedHistory = firstUserIndex !== -1 ? history.slice(firstUserIndex) : [];
+    // The current message is already at the end of the history array.
+    // We must exclude it from the history passed to chats.create to avoid consecutive user turns.
+    const historyWithoutCurrent = history.slice(0, -1);
+    const firstUserIndex = historyWithoutCurrent.findIndex(msg => msg.sender === 'user');
+    const cleanedHistory = firstUserIndex !== -1 ? historyWithoutCurrent.slice(firstUserIndex) : [];
 
     const chat = ai.chats.create({
       model: model,
