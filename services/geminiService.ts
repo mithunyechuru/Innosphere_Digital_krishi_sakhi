@@ -46,12 +46,16 @@ export const sendChatMessage = async (
     const langName = getLanguageName(language);
     const enforcedMessage = `${message} (Please answer strictly in ${langName})`;
 
+    // Find the first user message to ensure history starts with a user turn
+    const firstUserIndex = history.findIndex(msg => msg.sender === 'user');
+    const cleanedHistory = firstUserIndex !== -1 ? history.slice(firstUserIndex) : [];
+
     const chat = ai.chats.create({
       model: model,
       config: {
         systemInstruction: systemInstruction,
       },
-      history: history.map(msg => ({
+      history: cleanedHistory.map(msg => ({
         role: msg.sender === 'user' ? 'user' : 'model',
         parts: [{ text: msg.text }]
       }))
